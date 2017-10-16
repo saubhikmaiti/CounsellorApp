@@ -1,0 +1,178 @@
+﻿@{
+    ViewBag.Title = "Admin login";
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en" ng-app>
+<head>
+    <meta charset="utf-8">
+    <title>login Page</title>
+    <link href="/content/semantic/css/semantic.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+   
+    <script src="/Scripts/jquery-1.8.2.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery.ui.draggable.js" type="text/javascript"></script>
+
+    <!-- Core files -->
+    <script src="/Scripts/jquery.alerts.js" type="text/javascript"></script>
+    <link href="/Content/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+
+    <style type="text/css">
+        div.container {
+            width: 400px;
+            margin: 0 auto;
+            font-family: arial;
+        }
+    </style>
+    @Styles.Render("~/Content/css")
+ 
+</head>
+<body>
+
+    <div class="container">
+        <div class="float-right">
+            <nav>
+               
+            </nav>
+        </div>
+        <h2>Please login below</h2>
+
+        <div class="ui form segment" ng-controller="LoginController">
+
+            <div class="ui inverted dimmer" ng-class="{true: 'active', false: 'disabled'}[loading]">
+                <div class="ui text loader" id="Loading">Please wait while login you...</div>
+            </div>
+            
+                         
+            <div class="field">
+                <label for="Username">Username</label>
+                <div class="ui icon input">
+                    <input id="Username" placeholder="Username" type="text" ng-model="user.username">
+                    <i class="asterisk red icon"></i>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="Password">Password</label>
+                <div class="ui icon input">
+                    <input id="Password" placeholder="Password" type="password" ng-model="user.password">
+                    <i class="asterisk red icon"></i>
+                </div>
+            </div>
+
+           
+
+            <button class="ui blue button" ng-click="login()">Login</button>
+
+            <div class="ui error message"></div>
+        </div>
+
+    </div>
+
+    <script src="/content/jquery-1.10.2.min.js"></script>
+    <script src="/content/semantic/javascript/semantic.min.js"></script>
+    <script src="/content/angular.min.js"></script>
+
+    <script>
+
+        (function ($) {
+            $('.ui.form').form({
+                
+                username: {
+                    identifier: 'Username',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter a username'
+                    }]
+                },
+              
+                password: {
+                    identifier: 'Password',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter a password'
+                    }, {
+                        type: 'length[6]',
+                        prompt: 'Password needs to be atleast 6 characters long'
+                    }]
+                }
+            }, {
+                on: 'blur'
+            });
+        }(jQuery));
+
+        function LoginController($scope, $element) {
+            var Loginform = $($element);
+
+            $scope.user = {};
+            $scope.loading = false;
+
+            $scope.isInvalid = function () {
+                return !Loginform.form('validate form');
+            };
+
+            $scope.login = function () {
+                if (this.isInvalid()) {
+                    return;
+                }
+
+                this.loading = true;
+                Customer = {
+                    username: $scope.user.username,
+                    password: $scope.user.password
+                }
+                var request = $.ajax({
+                    url: '/api/Login',
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(Customer)
+
+                });
+
+
+                request.done(function (msg) {
+               
+                    $scope.loading = false;
+                    //alert(msg);
+                    if (msg.trim() == "Success") {
+                        $("#Loading").html("Thanks for login our Website!");
+                       // document.getElementById("Username").Value = "";
+                       // document.getElementById("Password").Value = "";
+                        window.location = "/Admin/Login/" + $scope.user.username;
+                        
+                    }
+                    else {
+                        $("#Loading").html("Login is Unsuccessful... <a href='/Admin/login'>Please try again</a>:)");
+
+                        //  $("#Loading").text("Login is unsuccessful!! Please try again");
+                        jAlert('login Unsuccessful!!Please try again', 'login is Unsuccessful');
+                    }
+                    //this.loading = true;
+
+                    console.debug("saved comment", msg);
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+              //      alert("Request failed: " + textStatus);
+                    $("#Loading").text("Login is unsuccessful!! Please try again");
+                    jAlert('logining Unsuccessful!!Please try again', 'Registration is Unsuccessful');
+
+                });
+               // this.loading = false;
+                /*   $http(req).success(function (data,status) {
+                       this.loading = false;
+                       alert(data + status);
+                   }).error(function (data, status) {
+                       alert(status);
+                   });*/
+                 
+                console.log(this.user);
+            };
+
+        }
+
+    </script>
+
+</body>
+</html>

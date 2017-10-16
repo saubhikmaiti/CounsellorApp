@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "View Records";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="#">Home <span class="sr-only">(current)</span></a></li>
+                <li><a href="/Home/DashBoard">DashBoard</a></li>
+                <li class="active"><a href="/Home/ViewRecords">Volunteers</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="">Content</a></li>
+                <li><a href="">Users</a></li>
+                <li><a href="">Evaluations</a></li>
+                <li><a href="">Settings</a></li>
+                <li><a href="">My Profile</a></li>
+                <li><a href="">Logout</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ng-controller="ViewRecords" >
+            <h1 class="page-header">Volunteers</h1>
+
+            <div class="table-responsive">
+                <table class="my-table">
+                    <tbody>
+                         
+                        <tr ng-repeat-start="Customer in CustomerRecords" class="volunteers-info">
+                            <td width="32px">
+                                <i class="glyphicon glyphicon-user profile-photo"></i>
+                            </td>
+                            <td>
+                                <strong>{{Customer.name}}</strong><br />
+                                <small class="text-muted">Customer Id - {{Customer.cid}}</small>
+                            </td>
+                            <td class="text-right">
+                                <i class="glyphicon glyphicon-chevron-down"></i><i class="glyphicon glyphicon-chevron-up"></i>
+                            </td>
+                        </tr>
+                        <tr class="volunteers-details" ng-repeat-end>
+                            <td colspan="3">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3"><strong>Personal Information</strong></td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td width="15%">Birthdate</td>
+                                            <td>
+                                                <span id="DateOfBirth_{{Customer.cid}}">{{Customer.DateOfBirth}}</span>
+                                                <form class="form-inline hidden">
+                                                    <div class="form-group">
+                                                        <input type="text" value="{{Customer.DateOfBirth}}" class="form-control input-sm" id="exampleInputDateOfBirth_{{Customer.cid}}">
+                                                    </div>
+                                                    <button type="button" ng-click="UpdateCustomerInfo(Customer.cid,Customer.DateOfBirth,'DateOfBirth')" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-ok"></i></button>
+                                                    <button type="button" class="btn btn-default btn-sm cancel-edit"><i class="glyphicon glyphicon-remove"></i></button>
+                                                </form>
+                                            </td>
+                                            <td class="text-right"><i class="glyphicon glyphicon-pencil edit-details"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>username</td>
+                                            <td>
+                                                <span id="username_{{Customer.cid}}">{{Customer.username}}</span>
+                                                <form class="form-inline hidden">
+                                                    <div class="form-group">
+                                                        <input type="text" value="{{Customer.username}}" class="form-control input-sm" id="exampleInputusername_{{Customer.cid}}">
+                                                    </div>
+                                                    <button type="button" ng-click="UpdateCustomerInfo(Customer.cid,Customer.username,'username')" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-ok"></i></button>
+                                                    <button type="button" class="btn btn-default btn-sm cancel-edit"><i class="glyphicon glyphicon-remove"></i></button>
+                                                </form>
+                                            </td>
+                                            <td class="text-right"><i class="glyphicon glyphicon-pencil edit-details"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email id</td>
+                                            <td>
+                                                <span id="email_{{Customer.cid}}">{{Customer.email}}</span>
+                                                <form class="form-inline hidden">
+                                                    <div class="form-group">
+                                                        <input type="text" value="{{Customer.email}}" class="form-control input-sm" id="exampleInputemail_{{Customer.cid}}">
+                                                    </div>
+                                                    <button type="button" ng-click="UpdateCustomerInfo(Customer.cid,Customer.email,'email')" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-ok"></i></button>
+                                                    <button type="button" class="btn btn-default btn-sm cancel-edit"><i class="glyphicon glyphicon-remove"></i></button>
+                                                </form>
+                                            </td>
+                                            <td class="text-right"><i class="glyphicon glyphicon-pencil edit-details"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>First Name</td>
+                                            <td>
+                                                <span id="name_{{Customer.cid}}">{{Customer.name}} </span>
+                                                <form class="form-inline hidden">
+                                                    <div class="form-group">
+                                                        <input type="text" value="{{Customer.name}}" class="form-control input-sm" id="exampleInputname_{{Customer.cid}}">
+                                                    </div>
+                                                    <button type="button" ng-click="UpdateCustomerInfo(Customer.cid,Customer.name,'name')" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-ok"></i></button>
+                                                    <button type="button" class="btn btn-default btn-sm cancel-edit"><i class="glyphicon glyphicon-remove"></i></button>
+                                                </form>
+                                            </td>
+                                            <td class="text-right"><i class="glyphicon glyphicon-pencil edit-details"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>SurName</td>
+                                            <td>
+                                                <span id="surname_{{Customer.cid}}">{{Customer.surname}} </span>
+                                                <form class="form-inline hidden">
+                                                    <div class="form-group">
+                                                        <input type="text" value="{{Customer.surname}}" class="form-control input-sm" id="exampleInputsurname_{{Customer.cid}}">
+                                                    </div>
+                                                    <button type="button" ng-click="UpdateCustomerInfo(Customer.cid,Customer.surname,'surname')" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-ok"></i></button>
+                                                    <button type="button" class="btn btn-default btn-sm cancel-edit"><i class="glyphicon glyphicon-remove"></i></button>
+                                                </form>
+                                            </td>
+                                            <td class="text-right"><i class="glyphicon glyphicon-pencil edit-details"></i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+<script src="/Scripts/DashBoardController.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        $(".my-table").on("click", ".volunteers-info", function () {
+            $(this).siblings(".volunteers-info").removeClass("active");
+            $(this).siblings(".volunteers-details").hide();
+            var element = $(this).parent()
+            if ($(this).hasClass("active")) {
+                $(this).removeClass("active");
+                $(this).next(".volunteers-details").hide();
+            }
+            else {
+                
+                $(this).addClass("active");
+                $(this).next(".volunteers-details").show();
+            }
+        })
+        $(".my-table").on("click", ".edit-details", function () {
+            $(this).parent().prev().find("span").addClass("hidden")
+            $(this).parent().prev().find("form").removeClass("hidden")
+        })
+
+        $(".my-table").on("click", ".cancel-edit", function () {
+            $(this).parent().prev().removeClass("hidden")
+            $(this).parent().addClass("hidden")
+        })
+    })
+</script>
+}
+

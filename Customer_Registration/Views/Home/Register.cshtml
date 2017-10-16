@@ -1,0 +1,192 @@
+﻿@{
+    ViewBag.Title = "Register";
+    Layout = null;
+
+}
+
+<!doctype html>
+<html lang="en" ng-app="RegisterApp">
+<head>
+    <meta charset="utf-8">
+    <title>Register Page</title>
+    <link href="/content/semantic/css/semantic.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+
+    <script src="/Scripts/jquery-1.8.2.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery.ui.draggable.js" type="text/javascript"></script>
+
+    <!-- Core files -->
+    <script src="/Scripts/jquery.alerts.js" type="text/javascript"></script>
+    <link href="/Content/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+    <!-- Latest compiled and minified CSS -->
+
+    <style type="text/css">
+        div.container {
+            width: 600px;
+            margin: 0 auto;
+            font-family: arial;
+        }
+    </style>
+    @Styles.Render("~/Content/css1")
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="float-right">
+            <nav>
+                <ul id="menu">
+                    @{
+                        if (System.Web.HttpContext.Current.Session["Admin"] != null)
+                        {
+                            <li>@Html.ActionLink("View Users", "DisplayCustomers", "Customer", new { area = "" }, null)</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Admin Login", "Login", "Admin", new { area = "" }, null)</li>
+                        }
+                    }
+                    <li>@Html.ActionLink("Register Me", "Register", "Home", new { area = "" }, null)</li>
+                </ul>
+            </nav>
+        </div>
+        <h2>Please Register below</h2>
+
+        <div class="ui form segment" ng-controller="RegisterController">
+
+            <div class="ui inverted dimmer" ng-class="{true: 'active', false: 'disabled'}[loading]">
+                <div class="ui text loader" id="Loading">Please wait while Registering you...</div>
+            </div>
+
+
+            <div class="two fields">
+                <div class="field">
+                    <label for="GivenName">First Name</label>
+                    <div class="ui icon input">
+                        <input id="GivenName" placeholder="First Name" type="text" ng-model="user.givenname">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="Surname">Surname</label>
+                    <div class="ui icon input">
+                        <input id="Surname" placeholder="Surname" type="text" ng-model="user.surname">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="dateofbirth">Select Date of Birth</label>
+
+                    <div class="ui icon input">
+                        <datetimepicker value="datetimepick" ></datetimepicker>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="Email">Email</label>
+                    <div class="ui icon input">
+                        <input id="Email" placeholder="Email" type="text" ng-model="user.email">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="Username">Username</label>
+                    <div class="ui icon input">
+                        <input id="Username" placeholder="Username" type="text" ng-model="user.username">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="Password">Password</label>
+                    <div class="ui icon input">
+                        <input id="Password" placeholder="Password" type="password" ng-model="user.password">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="PasswordConfimrm">Password Confirm</label>
+                    <div class="ui icon input">
+                        <input id="PasswordConfirm" type="password" ng-model="user.passwordConfirm">
+                    </div>
+                </div>
+
+                <button class="ui blue button" ng-click="register()">Submit</button>
+
+                <div class="ui error message"></div>
+            </div>
+
+        </div>
+
+        <script src="/content/jquery-1.10.2.min.js"></script>
+        <script src="/content/semantic/javascript/semantic.min.js"></script>
+        <script src="/Scripts/angular.js"></script>
+        <script src="/Scripts/RegistrationController.js"></script>
+        <!-- Plugin files -->
+        <script>
+
+            (function ($) {
+                $('.ui.form').form({
+                    givenName: {
+                        identifier: 'GivenName',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter your given name'
+                        }]
+                    },
+                    surname: {
+                        identifier: 'Surname',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter your surname'
+                        }]
+                    },
+                     username: {
+                        identifier: 'Username',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter a username'
+                        }]
+                    },
+                    email: {
+                        identifier: 'Email',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter your email'
+                        }, {
+                            type: 'email',
+                            prompt: 'Please enter a valid email'
+                        }]
+                    },
+                    password: {
+                        identifier: 'Password',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter a password'
+                        }, {
+                            type: 'length[6]',
+                            prompt: 'Password needs to be atleast 6 characters long'
+                        }]
+                    },
+                    passwordConfirm: {
+                        identifier: 'PasswordConfirm',
+                        rules: [{
+                            type: 'match[Password]',
+                            prompt: 'Password don\'t match'
+                        }]
+                    }
+                }, {
+                    on: 'blur'
+                });
+            }(jQuery));
+
+
+
+        </script>
+
+</body>
+</html>

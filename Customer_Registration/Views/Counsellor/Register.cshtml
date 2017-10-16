@@ -1,0 +1,371 @@
+﻿@{
+    ViewBag.Title = "Register";
+    Layout = null;
+
+}
+
+<!doctype html>
+<html lang="en" ng-app="CounsellorApp">
+<head>
+    <meta charset="utf-8">
+    <title>Cousellor Registration</title>
+
+    <link href="/content/semantic/css/semantic.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+
+    <script src="/Scripts/jquery-1.8.2.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery.ui.draggable.js" type="text/javascript"></script>
+
+    <!-- Core files -->
+    <script src="/Scripts/jquery.alerts.js" type="text/javascript"></script>
+    <link href="/Content/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+    <!-- Latest compiled and minified CSS -->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style type="text/css">
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+
+
+        .controls {
+            background-color: #fff;
+            border-radius: 2px;
+            border: 1px solid transparent;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+            font-family: Roboto;
+            font-size: 15px;
+            font-weight: 300;
+            height: 29px;
+            margin-left: 17px;
+            margin-top: 10px;
+            outline: none;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 400px;
+        }
+
+            .controls:focus {
+                border-color: #4d90fe;
+            }
+
+        .title {
+            font-weight: bold;
+        }
+
+        #infowindow-content {
+            display: none;
+        }
+
+        #map #infowindow-content {
+            display: inline;
+        }
+
+        div.container {
+            width: 600px;
+            margin: 0 auto;
+            font-family: arial;
+        }
+
+        .ui-button-icon-only {
+            width: 2em;
+            box-sizing: border-box;
+            text-indent: -9999px;
+            white-space: nowrap;
+        }
+    </style>
+    @Styles.Render("~/Content/css1")
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="float-right">
+            <nav>
+                <ul id="menu">
+                    @{
+                        if (System.Web.HttpContext.Current.Session["Admin"] != null)
+                        {
+                            <li>@Html.ActionLink("View Users", "DisplayCustomers", "Customer", new { area = "" }, null)</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Admin Login", "Login", "Admin", new { area = "" }, null)</li>
+                        }
+                    }
+                    <li>@Html.ActionLink("Register Me", "Register", "Home", new { area = "" }, null)</li>
+                </ul>
+            </nav>
+        </div>
+        <h2>Counsellor Registration</h2>
+
+        <div class="ui form segment" ng-controller="RegisterController">
+
+            <div class="ui inverted dimmer" ng-class="{true: 'active', false: 'disabled'}[loading]">
+                <div class="ui text loader" id="Loading">Please wait while Registering you...</div>
+            </div>
+
+
+            <div class="two fields">
+                <div class="field">
+                    <label for="GivenName">First Name</label>
+                    <div class="ui icon input">
+                        <input id="GivenName" placeholder="First Name" type="text" ng-model="user.givenname">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="Surname">Surname</label>
+                    <div class="ui icon input">
+                        <input id="Surname" placeholder="Surname" type="text" ng-model="user.surname">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="RegNo">Registration Number</label>
+                    <div class="ui icon input">
+                        <input id="RegNo" placeholder="Registration Number" type="text" ng-model="user.RegNo">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="YrOfExp">Year of Expirence</label>
+                    <div class="ui icon input">
+                        <input id="YrOfExp" placeholder="Year of Expirence i.e. 1,2,3.." type="text" ng-model="user.YrOfExp">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="Email">Email</label>
+                    <div class="ui icon input">
+                        <input id="Email" placeholder="Email" type="text" ng-model="user.email">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="Specialization">Specialization</label>
+                    <div class="ui icon input">
+                        <input id="Specialization" placeholder="Specialization" type="text" ng-model="user.specialization">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="Phone">Phone Number</label>
+                    <div class="ui icon input">
+                        <input id="phone" placeholder="Phone Number" type="text" ng-model="user.phone">
+                        <i class="asterisk red icon"></i>
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <label for="certificateattachment" class="col-md-12 control-label">Upload Professional degree cerificate</label>
+                    <div class="col-md-12">
+                        <input type="file" name="certificateattachment"
+                               class="form-control" data-ak-file-model="user.certificateattachment" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="profilepicattachment" class="col-md-12 control-label">Upload profile picture</label>
+                    <div class="col-md-12">
+                        <input type="file" name="profilepicattachment"
+                               class="form-control" data-ak-file-model="user.profilepicattachment" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="resumeattachment" class="col-md-12 control-label">Upload latest Resume</label>
+                    <div class="col-md-12">
+                        <input type="file" name="resumeattachment"
+                               class="form-control" data-ak-file-model="user.resumeattachment" />
+                    </div>
+                </div>
+
+
+                <!-- ProfCertificate
+                    ProfilePic
+                    CrResume
+                    PlaceId
+                    GeoAddress
+                -->
+                <div class="field">
+                    <a href="#" ng-click="showGoogleMap()">Add a location</a>
+                    <div class="col-md-12">
+                      
+                        <input id="address" placeholder="Address" type="text" ng-model="user.placename">
+                    </div>
+                </div>
+            </div>
+            <div class="one field">
+                <button class="ui blue button" ng-click="register()">Submit</button>
+                <div class="ui error message"></div>
+            </div>
+
+        </div>
+
+
+
+        <div id="dialog" title="Search your location">
+            <input id="pac-input" class="controls" type="text"
+                   placeholder="Enter a location">
+            <div id="map"></div>
+            <div id="infowindow-content">
+                <span id="place-name" class="title"></span><br>
+                Place ID - <span id="place-id"></span><br>
+                <span id="place-address"></span>
+            </div>
+     
+        </div>
+
+
+
+
+
+        <script src="/content/jquery-1.10.2.min.js"></script>
+        <script src="/content/semantic/javascript/semantic.min.js"></script>
+        <script src="/Scripts/angular.js"></script>
+        <script src="~/Scripts/CounsellorController.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbahX9eI_7YK6daX33C_0Z4eli87D1alc&libraries=places&callback=initMap" async defer></script>
+       
+        <script>
+
+            (function ($) {
+                $('.ui.form').form({
+                    givenName: {
+                        identifier: 'GivenName',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter your given name'
+                        }]
+                    },
+                    surname: {
+                        identifier: 'Surname',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter your surname'
+                        }]
+                    },
+                    username: {
+                        identifier: 'Username',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter a username'
+                        }]
+                    },
+                    email: {
+                        identifier: 'Email',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter your email'
+                        }, {
+                            type: 'email',
+                            prompt: 'Please enter a valid email'
+                        }]
+                    },
+                    password: {
+                        identifier: 'Password',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter a password'
+                        }, {
+                            type: 'length[6]',
+                            prompt: 'Password needs to be atleast 6 characters long'
+                        }]
+                    },
+                    passwordConfirm: {
+                        identifier: 'PasswordConfirm',
+                        rules: [{
+                            type: 'match[Password]',
+                            prompt: 'Password don\'t match'
+                        }]
+                    }
+                }, {
+                        on: 'blur'
+                    });
+           
+
+            }(jQuery));
+
+
+
+
+            function initMap() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: -33.8688, lng: 151.2195 },
+                    zoom: 13
+                });
+
+                var input = document.getElementById('pac-input');
+
+                var autocomplete = new google.maps.places.Autocomplete(input);
+                autocomplete.bindTo('bounds', map);
+
+                map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                google.maps.event.trigger(map, 'resize');
+                // google.maps.event.addDomListener(window, 'load', initMap);
+                setTimeout(function () {
+                    google.maps.event.trigger(map, "resize");
+                }, 3000);
+                //  google.maps.event.trigger(map, 'resize');
+                //  map.setCenter(location);
+
+                var infowindow = new google.maps.InfoWindow();
+                var infowindowContent = document.getElementById('infowindow-content');
+                infowindow.setContent(infowindowContent);
+                var marker = new google.maps.Marker({
+                    map: map
+                });
+                marker.addListener('click', function () {
+                    infowindow.open(map, marker);
+                });
+
+
+
+                autocomplete.addListener('place_changed', function () {
+                    infowindow.close();
+                    var place = autocomplete.getPlace();
+                    if (!place.geometry) {
+                        return;
+                    }
+
+                    if (place.geometry.viewport) {
+                        map.fitBounds(place.geometry.viewport);
+                    } else {
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(17);
+                    }
+
+                    // Set the position of the marker using the place ID and location.
+                    marker.setPlace({
+                        placeId: place.place_id,
+                        location: place.geometry.location
+                    });
+                    marker.setVisible(true);
+
+                    infowindowContent.children['place-name'].textContent = place.name;
+                    infowindowContent.children['place-id'].textContent = place.place_id;
+                    infowindowContent.children['place-address'].textContent =
+                        place.formatted_address;
+                    infowindow.open(map, marker);
+                    document.getElementById('address').value = place.formatted_address;
+                });
+            }
+
+
+
+        </script>
+        
+</body>
+</html>
